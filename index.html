@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Enviar Usuario</title>
+</head>
+<body>
+    <h1>Registro de Usuario en Contrato Inteligente</h1>
+    
+    <form id="userForm">
+        <label for="cedula">Cédula:</label>
+        <input type="text" id="cedula" name="cedula" required><br><br>
+        
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required><br><br>
+        
+        <button type="button" onclick="sendUser()">Enviar</button>
+    </form>
+    
+    <h2>Respuesta:</h2>
+    <pre id="response"></pre>
+    
+    <script>
+        async function sendUser() {
+            const cedula = document.getElementById('cedula').value;
+            const nombre = document.getElementById('nombre').value;
+            
+            const userData = {
+                cedula: cedula,
+                nombre: nombre
+            };
+
+            try {
+                const response = await fetch('http://localhost:5000/sendUser', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(userData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('response').textContent = `Transacción exitosa. Hash: ${data.hash}`;
+                } else {
+                    document.getElementById('response').textContent = `Error: ${data.error || 'No se pudo registrar el usuario'}`;
+                }
+            } catch (error) {
+                document.getElementById('response').textContent = `Error de red: ${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>
