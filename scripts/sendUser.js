@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const { ethers } = require('ethers');
 require('dotenv').config();
-const cors = require('cors'); // Asegúrate de que cors esté importado
+const cors = require('cors');
 
 const app = express();
 const PORT = process.env.PORT || 5000; // Usar el puerto de Heroku o el 5000 localmente
@@ -14,7 +14,7 @@ app.use(bodyParser.json()); // Middleware para parsear el cuerpo de la solicitud
 app.post('/sendUser', async (req, res) => {
     const userData = req.body;
 
-    // Asegúrate de que se reciban los datos correctos
+    // Validar datos recibidos
     if (!userData.cedula || !userData.nombre) {
         return res.status(400).json({ error: "Cédula y nombre son requeridos" });
     }
@@ -60,3 +60,4 @@ app.post('/sendUser', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en http://localhost:${PORT}`);
 });
+
